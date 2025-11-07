@@ -64,8 +64,8 @@ export default function LatestNews({ lastMessage }: { lastMessage: WebSocketMess
           <Newspaper className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Latest Market News</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">From News API & RSS feeds</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">En Son Pazar Haberleri</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">News API ve RSS beslemeleri</p>
         </div>
       </div>
 
@@ -118,7 +118,7 @@ export default function LatestNews({ lastMessage }: { lastMessage: WebSocketMess
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
                 >
-                  Read more
+                  Devamını oku
                   <ExternalLink className="w-3 h-3" />
                 </a>
               )}
@@ -127,7 +127,7 @@ export default function LatestNews({ lastMessage }: { lastMessage: WebSocketMess
         ) : (
           <div className="text-center text-gray-500 dark:text-gray-400 py-8">
             <Newspaper className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            <p>No news available yet</p>
+            <p>Henüz haber mevcut değil</p>
           </div>
         )}
       </div>

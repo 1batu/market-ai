@@ -106,8 +106,8 @@ export default function ReasoningFeed({ lastMessage }: { lastMessage: WebSocketM
           <Brain className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">AI Reasoning Feed</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Live agent decisions & thinking</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">AI Akıl Yürütme Beslemesi</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Canlı ajan kararları ve düşünce süreci</p>
         </div>
       </div>
 
@@ -117,7 +117,7 @@ export default function ReasoningFeed({ lastMessage }: { lastMessage: WebSocketM
           <div key={agentId} className="p-4 border border-blue-200 dark:border-blue-900 rounded-lg bg-blue-50 dark:bg-blue-950/30 animate-pulse">
             <div className="flex items-center gap-2">
               <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin" />
-              <span className="font-semibold text-blue-900 dark:text-blue-100">Thinking...</span>
+              <span className="font-semibold text-blue-900 dark:text-blue-100">Düşünüyor...</span>
             </div>
           </div>
         ))}
@@ -158,7 +158,7 @@ export default function ReasoningFeed({ lastMessage }: { lastMessage: WebSocketM
             {decision.thinking_steps && decision.thinking_steps.length > 0 && (
               <details className="text-sm mb-3">
                 <summary className="cursor-pointer text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium">
-                  📊 View detailed analysis ({decision.thinking_steps.length} steps)
+                  📊 Detaylı analiz göster ({decision.thinking_steps.length} adım)
                 </summary>
                 <div className="mt-3 space-y-2 pl-4 border-l-2 border-purple-200 dark:border-purple-800 py-2">
                   {decision.thinking_steps.map((step, idx) => (
@@ -174,7 +174,7 @@ export default function ReasoningFeed({ lastMessage }: { lastMessage: WebSocketM
             {/* Metrics */}
             <div className="flex flex-wrap gap-3 pt-3 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-600 dark:text-gray-400">Confidence:</span>
+                <span className="text-xs text-gray-600 dark:text-gray-400">Güven:</span>
                 <div className="flex items-center gap-1">
                   <div className="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <div
@@ -188,7 +188,7 @@ export default function ReasoningFeed({ lastMessage }: { lastMessage: WebSocketM
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-600 dark:text-gray-400">Risk:</span>
                 <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getRiskColor(decision.risk_level)}`}>
-                  {decision.risk_level}
+                  {decision.risk_level === 'low' ? 'Düşük' : decision.risk_level === 'medium' ? 'Orta' : 'Yüksek'}
                 </span>
               </div>
             </div>
@@ -198,7 +198,7 @@ export default function ReasoningFeed({ lastMessage }: { lastMessage: WebSocketM
         {decisions.length === 0 && thinkingAgents.size === 0 && (
           <div className="text-center text-gray-500 dark:text-gray-400 py-8">
             <Brain className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            No AI decisions yet. Waiting for agents...
+            Henüz AI kararı yok. Ajanlar bekleniyor...
           </div>
         )}
       </div>
