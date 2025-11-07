@@ -21,13 +21,9 @@ export default function Dashboard() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [agentHistory, setAgentHistory] = useState<AgentHistory[]>([]);
   const [lastMessage, setLastMessage] = useState<WebSocketMessage | null>(null);
+  const [darkMode, setDarkMode] = useState(true); // Default to true, will sync in useEffect
   const agentHistoryRef = useRef<AgentHistory[]>([]);
   const lastSnapshotTimeRef = useRef<number>(0);
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    const stored = localStorage.getItem('darkMode');
-    return stored ? JSON.parse(stored) : true;
-  });
   const handleWsMessage = (message: WebSocketMessage) => {
     setLastMessage(message);
 
@@ -62,10 +58,25 @@ export default function Dashboard() {
   // Initialize ref with agents when they change
   useEffect(() => {
     agentHistoryRef.current = agentHistory;
-  }, [agentHistory]);  useEffect(() => {
-    if (darkMode === null) return;
+  }, [agentHistory]);
+
+  // Load dark mode from localStorage only on client
+  // eslint-disable react-hooks/exhaustive-deps
+  useEffect(() => {
+    const stored = localStorage.getItem('darkMode');
+    setDarkMode(stored ? JSON.parse(stored) : true);
+  }, []);
+
+  useEffect(() => {
     // Update DOM and localStorage when darkMode changes
-    document.documentElement.classList.toggle('dark', darkMode);
+    const html = document.documentElement;
+    if (darkMode) {
+      html.classList.add('dark');
+      html.classList.remove('light');
+    } else {
+      html.classList.add('light');
+      html.classList.remove('dark');
+    }
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
 
@@ -221,7 +232,7 @@ export default function Dashboard() {
                         <span className={`w-1.5 h-1.5 rounded-full ${
                           agent.status === 'active' ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
                         }`} />
-                        {agent.status}
+                        {agent.status === 'active' ? 'Aktif' : 'Pasif'}
                       </span>
                     </div>
                   </div>
