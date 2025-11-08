@@ -24,6 +24,12 @@ docker-down: ## Stop Docker services
 docker-logs: ## View Docker logs
 	docker-compose logs -f
 
+db-migrate-006: ## Apply migration 006 (data sources) into running Postgres container
+	docker exec -i marketai-postgres psql -U marketai -d marketai_dev -f /docker-entrypoint-initdb.d/006_data_sources.sql
+
+db-verify-datasources: ## Verify v0.5 tables exist
+	docker exec -i marketai-postgres psql -U marketai -d marketai_dev -c "SELECT to_regclass('public.price_sources') AS price_sources, to_regclass('public.twitter_sentiment') AS twitter_sentiment, to_regclass('public.scraped_articles') AS scraped_articles;"
+
 install: ## Install dependencies
 	go mod download
 	go mod tidy

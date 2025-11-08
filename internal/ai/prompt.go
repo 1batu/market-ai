@@ -154,6 +154,48 @@ func BuildDecisionPrompt(req *DecisionRequest) string {
 			if i >= 3 {
 				break
 			}
+
+			// === MARKET CONTEXT (v0.5) ===
+			if len(req.MCPrices) > 0 || len(req.MCSentiments) > 0 || len(req.MCTopTweets) > 0 {
+				sb.WriteString("\n=== 📊 MARKET CONTEXT (Fused: Yahoo + Scraper + Twitter) ===\n")
+				if len(req.MCPrices) > 0 {
+					sb.WriteString("Prices (delayed ~15m):\n")
+					max := 5
+					if len(req.MCPrices) < max {
+						max = len(req.MCPrices)
+					}
+					for i := 0; i < max; i++ {
+						p := req.MCPrices[i]
+						sb.WriteString(fmt.Sprintf("- %s: %.2f TL (O:%.2f H:%.2f L:%.2f V:%d)\n", p.Symbol, p.Price, p.Open, p.High, p.Low, p.Volume))
+					}
+				}
+				if len(req.MCSentiments) > 0 {
+					sb.WriteString("Sentiment summary (tweets):\n")
+					shown := 0
+					for sym, agg := range req.MCSentiments {
+						sb.WriteString(fmt.Sprintf("- %s: avg=%.2f pos=%d neu=%d neg=%d\n", sym, agg.AvgSentiment, agg.PositiveCount, agg.NeutralCount, agg.NegativeCount))
+						shown++
+						if shown >= 5 {
+							break
+						}
+					}
+				}
+				if len(req.MCTopTweets) > 0 {
+					sb.WriteString("Top tweets:\n")
+					max := 3
+					if len(req.MCTopTweets) < max {
+						max = len(req.MCTopTweets)
+					}
+					for i := 0; i < max; i++ {
+						t := req.MCTopTweets[i]
+						sb.WriteString(fmt.Sprintf("- @%s (impact %.2f): %s\n", t.Author, t.ImpactScore, truncate(t.Text, 140)))
+					}
+				}
+				if req.MCNotes != "" {
+					sb.WriteString(req.MCNotes + "\n")
+				}
+				sb.WriteString("\n")
+			}
 			sb.WriteString(fmt.Sprintf("- %s %s %d lots @ %.2f TL (%s)\n",
 				t.CreatedAt.Format("15:04"), t.TradeType, t.Quantity, t.Price, t.Reasoning))
 		}
@@ -163,6 +205,7 @@ func BuildDecisionPrompt(req *DecisionRequest) string {
 	sb.WriteString("=== QUESTION ===\n")
 	sb.WriteString("Based on the above information, what trading decision should you make RIGHT NOW?\n")
 	sb.WriteString("Consider: technical analysis, risk management, portfolio balance, market trends, AND NEWS IMPACT.\n")
+	sb.WriteString("Also consider market context (multi-source sentiment and recent signals).\n")
 	sb.WriteString("Remember to respond ONLY with valid JSON in the specified format.\n")
 
 	return sb.String()
@@ -183,4 +226,14 @@ func formatDuration(d time.Duration) string {
 	}
 	days := int(d.Hours() / 24)
 	return fmt.Sprintf("%dd ago", days)
+}
+
+func truncate(s string, n int) string {
+	if len(s) <= n {
+		return s
+	}
+	if n <= 3 {
+		return s[:n]
+	}
+	return s[:n-3] + "..."
 }

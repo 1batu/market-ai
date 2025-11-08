@@ -14,6 +14,9 @@ func SetupRoutes(
 	tradeHandler *handlers.TradeHandler,
 	leaderboardHandler *handlers.LeaderboardHandler,
 	roiHistoryHandler *handlers.ROIHistoryHandler,
+	marketCtxHandler *handlers.MarketContextHandler,
+	debugHandler *handlers.DebugDataHandler,
+	metricsHandler *handlers.MetricsHandler,
 	hub *websocket.Hub,
 ) {
 	app.Get("/health", healthHandler.Check)
@@ -40,4 +43,16 @@ func SetupRoutes(
 	// Leaderboard
 	v1.Get("/leaderboard", leaderboardHandler.GetLeaderboard)
 	v1.Get("/leaderboard/roi-history", roiHistoryHandler.GetAllAgentsROIHistory)
+
+	// Market context (v0.5)
+	v1.Get("/market/context", marketCtxHandler.GetContext)
+
+	// Metrics endpoint (observability)
+	v1.Get("/metrics", metricsHandler.Get)
+
+	// Debug endpoints (per-source)
+	dbg := v1.Group("/debug")
+	dbg.Get("/yahoo", debugHandler.GetYahoo)
+	dbg.Get("/scraper", debugHandler.GetScraper)
+	dbg.Get("/tweets", debugHandler.GetTweets)
 }

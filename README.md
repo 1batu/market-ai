@@ -10,7 +10,7 @@
 
 Market AI, finansal piyasalarda yapay zekâ ajanlarının (AI agents) farklı stratejilerle nasıl kararlar aldığını gözlemlemeyi amaçlayan, deneysel bir simülasyon ve test projesidir.
 
-## 🎯 v0.3 - Autonomous AI Agent System with News Integration
+## 🎯 v0.3 - Haber Entegrasyonlu Otonom AI Ajan Sistemi
 
 ### ✨ Yeni Özellikler
 
@@ -31,7 +31,7 @@ Market AI, finansal piyasalarda yapay zekâ ajanlarının (AI agents) farklı st
 - **Agent Engine**: Her agent için 30-60s aralıklarla:
   1. Piyasa verisi + haberleri topla
   2. AI client'a isteği gönder (haber bağlamıyla)
-  3. Kararı kaydedilip düşünme adımlarını depola
+  3. Kararı kaydet ve düşünme adımlarını depola
   4. Risk Manager'dan geçir
   5. Trade'i çalıştır / reddet
   6. WebSocket'ten broadcast et
@@ -41,44 +41,44 @@ Market AI, finansal piyasalarda yapay zekâ ajanlarının (AI agents) farklı st
 
 #### Frontend (Next.js)
 
-- **ReasoningFeed**: Real-time AI decision stream (confidence, risk level, thinking steps)
-- **LatestNews**: Market news display (impact level, related stocks, sentiment)
-- **Dashboard**: Agents performance, P&L tracking, live status
+- **ReasoningFeed**: Gerçek zamanlı AI karar akışı (güven, risk seviyesi, düşünme adımları)
+- **LatestNews**: Piyasa haberleri gösterimi (etki seviyesi, ilgili hisseler, duygu)
+- **Dashboard**: Ajanların performansı, P&L takibi, canlı durum
 
 ### 📊 Karar Döngüsü
 
 ```
-News Aggregator (30 min cycle)
+News Aggregator (30 dk döngü)
     ↓
-    [Fetch + Cache]
+    [Getir + Önbellekle]
     ↓
-Agent Engine (30-60s random per agent)
-    ↓ (every cycle)
-    ├─ Gather market data + recent news
-    ├─ Call AI with context
-    ├─ Store decision + thinking steps
-    ├─ Validate with Risk Manager
-    ├─ Execute/Reject trade
-    └─ Broadcast via WebSocket
+Agent Engine (ajan başına 30-60s rastgele)
+    ↓ (her döngüde)
+    ├─ Piyasa verisi + son haberleri topla
+    ├─ AI'ı bağlamla çağır
+    ├─ Kararı + düşünme adımlarını kaydet
+    ├─ Risk Manager'dan doğrula
+    ├─ Trade'i çalıştır/reddet
+    └─ WebSocket ile yayınla
     ↓
 Frontend ReasoningFeed + News Panel
     ↓
-    [Real-time updates]
+    [Gerçek zamanlı güncellemeler]
 ```
 
 ### 💰 Maliyet Tahminleri
 
-**Test Modelleri (v0.3 default):**
+**Test Modelleri (v0.3 varsayılan):**
 
-- GPT-3.5-turbo: $0.001/req → ~$2-3/day
-- Claude 3 Haiku: $0.00025/req → ~$0.5/day
-- **Toplam**: ~$3-5/day
+- GPT-3.5-turbo: $0.001/istek → ~$2-3/gün
+- Claude 3 Haiku: $0.00025/istek → ~$0.5/gün
+- **Toplam**: ~$3-5/gün
 
-**Production (optional):**
+**Production (opsiyonel):**
 
-- GPT-4-turbo: $0.01/req → ~$20-30/day
-- Claude 3 Opus: $0.015/req → ~$15-25/day
-- **Toplam**: ~$35-50/day
+- GPT-4-turbo: $0.01/istek → ~$20-30/gün
+- Claude 3 Opus: $0.015/istek → ~$15-25/gün
+- **Toplam**: ~$35-50/gün
 
 ### 🚀 Başlangıç
 
@@ -101,19 +101,19 @@ docker-compose up -d
 market-ai/
 ├── backend (Go)
 │   ├── internal/
-│   │   ├── models/        # Data models
-│   │   ├── services/      # Business logic
-│   │   ├── ai/            # AI clients + prompting
-│   │   ├── news/          # News aggregation
-│   │   ├── cache/         # Redis caching
-│   │   └── config/        # Configuration
-│   ├── migrations/        # Database schemas
-│   └── cmd/server/        # Entry point
+│   │   ├── models/        # Veri modelleri
+│   │   ├── services/      # İş mantığı
+│   │   ├── ai/            # AI istemcileri + promptlama
+│   │   ├── news/          # Haber toplama
+│   │   ├── cache/         # Redis önbellekleme
+│   │   └── config/        # Yapılandırma
+│   ├── migrations/        # Veritabanı şemaları
+│   └── cmd/server/        # Giriş noktası
 ├── frontend (Next.js)
-│   ├── components/        # React components
-│   ├── lib/               # Utilities
-│   └── app/               # Pages
-└── docker-compose.yml     # Services
+│   ├── components/        # React bileşenleri
+│   ├── lib/               # Yardımcılar
+│   └── app/               # Sayfalar
+└── docker-compose.yml     # Servisler
 ```
 
 ### 🔧 Amaç
@@ -129,47 +129,47 @@ Bu proje yalnızca deneysel ve eğitim/test amaçlıdır. Buradaki hiçbir çık
 
 ---
 
-## 🚀 v0.4 – Çoklu AI Arena & Leaderboard
+## 🚀 v0.4 – Çoklu AI Arena & Skor Tablosu
 
 v0.4 ile sistem tekil ajanlardan rekabetçi çoklu yapay zekâ (8 farklı model) arenasına genişletildi.
 
 ### ✅ Hedefler
 
 - 8 AI ajanı (OpenAI GPT-4 / GPT-4o-mini, Claude, Gemini, DeepSeek, Llama Groq, Mixtral, Grok)
-- Canlı liderlik tablosu (ROI, Win Rate, P/L, Toplam Değer)
+- Canlı liderlik tablosu (ROI, Kazanma Oranı, P/L, Toplam Değer)
 - Periyodik sıralama hesaplama (ağırlıklı skor formülü)
 - WebSocket ile anlık güncelleme yayınları
-- İstatistik tabloları: günlük, snapshot, head-to-head (temel şema)
+- İstatistik tabloları: günlük, anlık görüntü, karşılıklı maç (temel şema)
 
 ### 🗄 Yeni Veritabanı Tabloları (Migration 005)
 
-- `agent_performance_snapshots` – Saatlik/isteğe bağlı snapshot kayıtları
+- `agent_performance_snapshots` – Saatlik/isteğe bağlı anlık görüntü kayıtları
 - `leaderboard_rankings` – Hesaplanmış sıralama ve rozetler
 - `agent_matchups` – İki ajan arası kazanma-kaybetme takibi
-- `agent_daily_stats` – Günlük toplu metrikler (wins, losses, volume, best/worst trade)
-- Fonksiyon: `update_leaderboard_rankings()` – ROI, Win Rate, P/L ağırlıklı skor
+- `agent_daily_stats` – Günlük toplu metrikler (kazanç, kayıp, hacim, en iyi/kötü işlem)
+- Fonksiyon: `update_leaderboard_rankings()` – ROI, Kazanma Oranı, P/L ağırlıklı skor
 
-### 🔢 Sıralama Formülü (Overall Rank)
+### 🔢 Sıralama Formülü (Genel Sıralama)
 
-$$ overall = (roi _ 0.4) + (win_rate _ 0.3) + ((total_profit_loss / 1000) \* 0.3) $$
+$$ overall = (roi \times 0.4) + (win\_rate \times 0.3) + ((total\_profit\_loss / 1000) \times 0.3) $$
 
 ### 🔌 Backend Ekleri
 
 - Yeni AI client dosyaları: `google.go`, `deepseek.go`, `groq.go`, `mistral.go`, `xai.go`
-- Leaderboard servisi: periyodik (env ile ayarlanabilir) güncelleme + WebSocket broadcast
+- Skor tablosu servisi: periyodik (env ile ayarlanabilir) güncelleme + WebSocket yayını
 - REST endpoint: `GET /api/v1/leaderboard`
-- Konfigürasyon: `LEADERBOARD_UPDATE_INTERVAL` (saniye)
+- Yapılandırma: `LEADERBOARD_UPDATE_INTERVAL` (saniye)
 
 ### 🖥 Frontend Ekleri
 
-- `Leaderboard.tsx` – Canlı tablo, ROI rozetleri, P/L, Win Rate
+- `Leaderboard.tsx` – Canlı tablo, ROI rozetleri, P/L, Kazanma Oranı
 - Dashboard entegrasyonu
 
 ### 🔑 Ortam Değişkenleri (v0.4)
 
 `.env`:
 
-```
+```env
 OPENAI_API_KEY=
 ANTHROPIC_API_KEY=
 GOOGLE_API_KEY=
@@ -216,9 +216,9 @@ ON CONFLICT (agent_id) DO NOTHING;
 
 ### 🔁 Servis Döngüsü
 
-1. Leaderboard servisi `update_leaderboard_rankings()` fonksiyonunu her interval sonunda çağırır.
+1. Skor tablosu servisi her interval sonunda `update_leaderboard_rankings()` fonksiyonunu çağırır.
 2. Sıralama sonuçlarını WebSocket ile `leaderboard_updated` olarak yayınlar.
-3. Frontend `Leaderboard.tsx` ilk veriyi REST’ten çeker, sonra anlık güncellemeleri websocket’ten işler.
+3. Frontend `Leaderboard.tsx` ilk veriyi REST'ten çeker, sonra anlık güncellemeleri websocket'ten işler.
 
 ### 🧪 Doğrulama
 
@@ -244,25 +244,25 @@ wscat -c ws://localhost:8080/ws
 | Mixtral 8x22B        | ~$2.88                |
 | Llama 3.1 70B (Groq) | $0.00                 |
 
-**Toplam (Full Premium)** ≈ $27/gün (~$810/ay)
-**Minimum (Budget Set)** ≈ $2–5/gün
+**Toplam (Full Premium)** ≈ $27/gün (~$810/ay)  
+**Minimum (Bütçe Seti)** ≈ $2–5/gün
 
 ### 💡 Aşamalı Maliyet Stratejisi
 
 | Faz            | Modeller                              | Günlük Maliyet | Amaç                  |
 | -------------- | ------------------------------------- | -------------- | --------------------- |
-| Phase 1 (Test) | GPT-4o Mini, DeepSeek, Mixtral, Llama | ~$2            | Fonksiyonel doğrulama |
-| Phase 2 (Demo) | + Gemini, Claude Haiku                | ~$8            | Demo sunumu           |
-| Phase 3 (Prod) | + GPT-4, Claude Sonnet/Opus, Grok     | ~$27           | Rekabetçi analiz      |
+| Faz 1 (Test)   | GPT-4o Mini, DeepSeek, Mixtral, Llama | ~$2            | Fonksiyonel doğrulama |
+| Faz 2 (Demo)   | + Gemini, Claude Haiku                | ~$8            | Demo sunumu           |
+| Faz 3 (Üretim) | + GPT-4, Claude Sonnet/Opus, Grok     | ~$27           | Rekabetçi analiz      |
 
-### � Ortam Bayrakları ile Maliyet Kontrolü
+### 🎚 Ortam Bayrakları ile Maliyet Kontrolü
 
 `BUDGET_MODE` ve `ENABLE_PREMIUM_MODELS` bayrakları ile çağrı frekansı ve kayıtlı modelleri yönetebilirsin.
 
-| Değişken                | Varsayılan | Etki                                                                                                    |
-| ----------------------- | ---------- | ------------------------------------------------------------------------------------------------------- |
-| `BUDGET_MODE`           | `false`    | `true` ise karar döngüsü 30–60 sn yerine 60–120 sn çalışır (istek sayısı azalır).                       |
-| `ENABLE_PREMIUM_MODELS` | `true`     | `false` ise GPT-4, Claude (Sonnet/Opus), Grok kayıt edilmez; yalnızca bütçe dostu modeller aktif kalır. |
+| Değişken                | Varsayılan | Etki                                                                                                            |
+| ----------------------- | ---------- | --------------------------------------------------------------------------------------------------------------- |
+| `BUDGET_MODE`           | `false`    | `true` ise karar döngüsü 30–60 sn yerine 60–120 sn çalışır (istek sayısı azalır).                              |
+| `ENABLE_PREMIUM_MODELS` | `true`     | `false` ise GPT-4, Claude (Sonnet/Opus), Grok kayıt edilmez; yalnızca bütçe dostu modeller aktif kalır.        |
 
 Örnek bütçe ayarı:
 
@@ -274,16 +274,254 @@ ENABLE_PREMIUM_MODELS=false
 ### 🔧 Diğer Tasarruf Teknikleri
 
 - Token azaltımı: `AI_TEMPERATURE` sabit tutup prompt içeriğini minimalize et.
-- Snapshot seyrekliği: Snapshot kayıtlarını (ileride) 1 dk yerine 5 dk yap.
+- Anlık görüntü seyrekliği: Snapshot kayıtlarını 1 dk yerine 5 dk yap.
 - Dinamik hız: Volatilite düşükken interval uzat, yükselince kısalt.
 - Fallback: Premium yanıt hatasında otomatik Mixtral/Llama fallback.
 
-### �🔮 v0.5 Öngörüleri
+---
 
-- Gerçek zamanlı BIST veri feed entegrasyonu
-- Tarihsel backtest motoru
-- Saat bazlı piyasa simülasyonu (09:30–18:00)
-- Genişletilmiş risk/performans metrikleri (Sortino, Calmar)
+## 🎉 v0.5 – Çoklu Kaynak Veri Füzyonu & Güvenilirlik Skorlaması
+
+v0.5 ile **çoklu kaynaklı piyasa verisi toplama**, **duygu analizi**, **güvenilirlik skorlaması** ve **gözlemlenebilirlik metrikleri** eklenerek bağlam-farkındalı AI ticaret ajanları güçlendirildi.
+
+### ✨ Eklenen Özellikler
+
+#### 1. Çoklu Kaynak Veri Toplama
+
+- **Yahoo Finance API**: 15 dakika gecikmeli BIST kotasyonları (toplu çekme)
+- **Bloomberg HT Scraper**: Colly ile Türk finans haberleri
+- **Twitter API**: BIST sembollerinden bahseden son tweetler (arama)
+
+#### 2. Duygu Analizi
+
+- **OpenAI Destekli Tweet Analizi**: Duygu sınıflandırması (pozitif/negatif/nötr) + güven skoru
+- **Hisse Bazlı Toplama**: Ortalama duygu, pozitif/negatif sayıları, en etkili tweet
+- **Veritabanı Fonksiyonu**: Zaman pencereli toplamalar için `update_sentiment_aggregate()`
+
+#### 3. Füzyon Servisi
+
+**Temel Yetenekler**:
+
+- Paralel olarak fiyat + haber + tweet çekimi
+- Tüm tweetler için duygu analizi
+- Güven skorlu fiyat anlık görüntüleri kaydetme
+- Tekrarlı API çağrılarını azaltmak için 30 saniyelik önbellek
+- `price_sources` ve `twitter_sentiment` tablolarına veri kaydetme
+
+#### 4. Güvenilirlik Skorlaması
+
+**Algoritma**:
+
+```
+confidence = clamp(50 + 40*successRate - responsePenalty - variancePenalty, 5, 99.9)
+```
+
+- `successRate`: kaynak başına geçmiş çekme başarı oranı
+- `responsePenalty`: yavaş yanıtları cezalandırır (>1500ms temel değer)
+- `variancePenalty`: gelecekte çapraz kaynak fiyat farklılığı tespiti
+
+**Takip**:
+
+- Bellek içi istatistikler: kaynak başına toplam, başarı sayısı, ortalama süre
+- DB otomatik güncelleme: `data_sources` tablosu metrikleri izler (asenkron yazma)
+
+#### 5. Gözlemlenebilirlik & Metrikler
+
+**Endpoint**: `GET /api/v1/metrics`
+
+Tüm veri kaynakları için canlı güvenilirlik metriklerini döner:
+
+```json
+{
+  "success": true,
+  "data": {
+    "data_sources": [
+      {
+        "source_type": "yahoo",
+        "source_name": "Yahoo Finance API",
+        "is_active": true,
+        "total_fetches": 120,
+        "success_count": 118,
+        "error_count": 2,
+        "avg_response_time_ms": 850,
+        "status": "active",
+        "last_fetch_at": "2025-11-08T12:34:56Z"
+      }
+    ]
+  }
+}
+```
+
+#### 6. AI Prompt Geliştirmeleri
+
+- `DecisionRequest` piyasa bağlamı alanlarıyla genişletildi: `MCPrices`, `MCSentiments`, `MCTopTweets`, `MCNotes`
+- `BuildDecisionPrompt()` canlı fiyatlar, duygu özeti ve en etkili tweetlerle "MARKET CONTEXT" bölümü ekler
+- Ajan kararları artık gerçek zamanlı çoklu kaynak verisinden faydalanır
+
+#### 7. Debug Endpoint'leri
+
+**Rotalar**: `/api/v1/debug/{yahoo,scraper,tweets}`
+
+- `/debug/yahoo?symbols=THYAO,AKBNK`: Doğrudan Yahoo fiyat çekimi
+- `/debug/scraper`: Bloomberg HT haber kazıması
+- `/debug/tweets?max=50&analyze=true`: Opsiyonel duygu analiziyle son tweetler
+
+#### 8. Veritabanı Şeması
+
+**Migration 006** (`migrations/006_data_sources.sql`):
+
+- `data_sources`: Güvenilirlik metrik takibi
+- `price_sources`: Çoklu kaynak fiyat anlık görüntüleri + güven
+- `twitter_sentiment`: Duygu skorlarıyla tweet arşivi
+- `stock_sentiment_aggregates`: Zaman pencereli duygu toplamaları
+- `scraped_articles`: Hisse bahisli haber arşivi
+
+**Migration 007** (`migrations/007_data_sources_seed.sql`):
+
+- Metrik takibi için 3 temel veri kaynağı başlatması
+
+#### 9. Servisler & Otomasyon
+
+- **MarketDataCollector**: Periyodik veri çekme (yapılandırılabilir aralıklar)
+- **SentimentTracker**: Her N dakikada `update_sentiment_aggregate()` çalıştırır
+- **AgentEngine**: Karar döngüsüne `MarketContext` enjekte eder
+
+#### 10. Frontend Bileşenleri
+
+- **MarketDataSources**: Kaynak başına canlı çekme süreleri
+- **StockSentimentPanel**: Gerçek zamanlı duygu göstergeleri + en etkili tweet
+- **BreakingNews**: Etki seviyeleriyle akan haber beslemesi
+- **SentimentGauge**: Renkli duygu göstergesi
+
+### 📊 Sistem Akışı (v0.5)
+
+```
+┌─────────────────┐
+│  Veri Kaynakları│
+│  (Yahoo,        │
+│   Bloomberg HT, │
+│   Twitter API)  │
+└────────┬────────┘
+         │ çekme (zamanlanmış)
+         ▼
+┌─────────────────┐
+│ Füzyon Servisi  │◄─── 30s önbellek
+│ (MarketContext) │
+└────────┬────────┘
+         │ kaydetme
+         ▼
+┌─────────────────┐      ┌─────────────────┐
+│  price_sources  │      │twitter_sentiment│
+│  (güven)        │      │  (analiz edilmiş)│
+└─────────────────┘      └─────────────────┘
+         │                        │
+         └───────┬────────────────┘
+                 │ topla
+                 ▼
+         ┌───────────────┐
+         │stock_sentiment│
+         │  _aggregates  │
+         └───────┬───────┘
+                 │
+                 ▼
+         ┌───────────────┐
+         │  AI Ajanları  │◄─── Gelişmiş Prompt
+         │  (Karar       │     MarketContext ile
+         │   Motoru)     │
+         └───────────────┘
+```
+
+### 🚀 v0.5 Kurulum
+
+#### 1. Migration'ları Uygula
+
+```bash
+docker exec -i marketai-postgres psql -U marketai -d marketai_dev < migrations/006_data_sources.sql
+docker exec -i marketai-postgres psql -U marketai -d marketai_dev < migrations/007_data_sources_seed.sql
+```
+
+#### 2. Ortamı Yapılandır
+
+`.env` dosyasına ekle:
+
+```env
+# Sembol Evreni
+SYMBOL_UNIVERSE=THYAO,AKBNK,ASELS,GARAN,BIMAS,KCHOL,SISE
+
+# Çekme Aralıkları (dakika)
+YAHOO_FETCH_INTERVAL=5
+SCRAPER_FETCH_INTERVAL=15
+TWITTER_FETCH_INTERVAL=10
+SENTIMENT_UPDATE_INTERVAL=5
+
+# Twitter API
+TWITTER_API_KEY=api_anahtarin
+TWITTER_API_SECRET=api_sifren
+TWITTER_ACCESS_TOKEN=erisim_tokenin
+TWITTER_ACCESS_SECRET=erisim_sifresi
+```
+
+#### 3. Derle & Çalıştır
+
+```bash
+go build -o bin/market-ai ./cmd/server
+./bin/market-ai
+```
+
+#### 4. Endpoint'leri Doğrula
+
+```bash
+# Piyasa bağlamı
+curl "http://localhost:8080/api/v1/market/context?symbols=THYAO,AKBNK" | jq
+
+# Metrikler
+curl http://localhost:8080/api/v1/metrics | jq
+
+# Debug
+curl "http://localhost:8080/api/v1/debug/yahoo?symbols=THYAO" | jq
+curl "http://localhost:8080/api/v1/debug/tweets?max=20&analyze=true" | jq
+```
+
+### 🧪 Testler
+
+```bash
+# Tüm testleri çalıştır
+go test ./...
+
+# Güvenilirlik skorlaması testi
+go test ./internal/datasources/fusion -v -run TestComputeConfidence
+
+# Handler testleri
+go test ./internal/api/handlers -v
+```
+
+### 📚 Dokümantasyon
+
+- **Güvenilirlik Skorlaması**: [docs/GUVENILIRLIK.md](docs/GUVENILIRLIK.md)
+
+### 🎯 v0.5 Başarılar
+
+✅ 3 veri kaynağı (Yahoo, Bloomberg HT, Twitter)  
+✅ Duygu analizi (OpenAI destekli + toplama)  
+✅ Güvenilirlik skorlaması (fiyat başına 0-100 güven)  
+✅ Gözlemlenebilirlik (`/api/v1/metrics` endpoint + DB takibi)  
+✅ AI prompt geliştirmesi (bağlam-farkındalı kararlar)  
+✅ Debug endpoint'leri (kaynak başına tanılama)  
+✅ Otomatik toplayıcılar (zamanlanmış çekimler + duygu güncellemeleri)  
+✅ Kapsamlı testler (güvenilirlik skorlaması + handler'lar)  
+✅ Üretime hazır build
+
+### 🔮 v0.6 Yol Haritası
+
+- Çoklu kaynak fiyat füzyonu (güvene göre ağırlıklı ortalama)
+- Çakışma tespiti ve uyarılar (kaynaklar %5'ten fazla farklıysa)
+- Grafana dashboardları için Prometheus exporter
+- Dinamik kaynak kapatma (güvenilir olmayan kaynakları otomatik devre dışı bırak)
+- Twitter streaming API entegrasyonu (gerçek zamanlı duygu)
+- Duygu-odaklı risk ayarlamaları
+- Ek scraper'lar (Investing.com, KAP)
+
+---
 
 ### 🛡 Notlar
 
