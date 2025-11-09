@@ -150,7 +150,7 @@ func (na *NewsAggregator) storeArticle(ctx context.Context, article models.NewsA
 			title, description, content, source, url,
 			event_type, related_stocks, published_at, fetched_at
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
-		ON CONFLICT DO NOTHING
+		ON CONFLICT (url) WHERE url IS NOT NULL DO NOTHING
 	`
 
 	_, err := na.db.Exec(ctx, query,
@@ -207,7 +207,7 @@ func (na *NewsAggregator) GetLatestNews(ctx context.Context) ([]models.NewsArtic
 	query := `
 		SELECT id, title, description, source, url, related_stocks, published_at, fetched_at, created_at
 		FROM market_events
-		WHERE published_at > NOW() - INTERVAL '3 hours'
+		WHERE published_at > NOW() - INTERVAL '24 hours'
 		ORDER BY published_at DESC
 		LIMIT 20
 	`
