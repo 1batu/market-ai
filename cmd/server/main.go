@@ -260,9 +260,10 @@ func main() {
 	tradeHandler := handlers.NewTradeHandler(db, tradingEngine)
 	leaderboardHandler := handlers.NewLeaderboardHandler(db)
 	roiHistoryHandler := handlers.NewROIHistoryHandler(db)
+	newsHandler := handlers.NewNewsHandler(newsAggregator)
 	authHandler := handlers.NewAuthHandler(cfg)
 
-	api.SetupRoutes(app, healthHandler, agentHandler, stockHandler, tradeHandler, leaderboardHandler, roiHistoryHandler, marketCtxHandler, debugHandler, metricsHandler, universeHandler, authHandler, hub)
+	api.SetupRoutes(app, healthHandler, agentHandler, stockHandler, tradeHandler, leaderboardHandler, roiHistoryHandler, marketCtxHandler, debugHandler, metricsHandler, universeHandler, newsHandler, authHandler, hub)
 
 	go func() {
 		addr := fmt.Sprintf(":%s", cfg.Server.Port)
