@@ -76,6 +76,11 @@ func (na *NewsAggregator) Start(ctx context.Context) {
 	}
 }
 
+// FetchAndStore tüm kaynaklardan haber getirir ve veritabanına/önbelleğe kaydeder (public method for API)
+func (na *NewsAggregator) FetchAndStore(ctx context.Context) {
+	na.fetchAndStore(ctx)
+}
+
 // fetchAndStore tüm kaynaklardan haber getirir ve veritabanına/önbelleğe kaydeder
 func (na *NewsAggregator) fetchAndStore(ctx context.Context) {
 	start := time.Now()
